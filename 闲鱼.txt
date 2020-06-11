@@ -1,0 +1,80 @@
+长理闲鱼小程序
+----------------
+用户user：姓名name，昵称nickName，性别sex，年龄age，学院college，年级grade【不可变16级/17级/18级/19级】，专业major，身份证idCard【实名认证，唯一】，电话号码phone【唯一】，住址address，微信头像photo，注册时间date
+发布商品publishGoods：姓名name，价格price，描述description，图片photo1（2、3、4、5、6），卖出状态status，类别category，发布人昵称nickName，发布人身份证publishIdCard【唯一】，发布时间pDate，买家buyerIdCard【唯一】，发布地址address、交易时间date
+举报report：举报人reportIdCard，发布人身份证【被举报人】publishIdCard，发布时间pDate，举报内容content，受理状态status，举报时间date
+收藏商品favor：身份证idCard【唯一】，发布人身份证publishIdCard【唯一】，发布时间pDate，收藏时间date
+关注用户focus：身份证idCard【唯一】，发布人身份证publishIdCard【唯一】，关注时间date
+点赞商品likeGoods：身份证idCard【唯一】，发布人身份证publishIdCard【唯一】，发布时间pDate，点赞时间date
+留言leave：身份证idCard【唯一】，发布人身份证publishIdCard【唯一】，发布时间pDate，留言内容content，留言时间date
+用户对小程序的反馈feedback：电话phone，反馈内容content，反馈时间date
+取消交易cancel：发布人身份证publishIdCard【唯一】，发布时间pDate，买家buyerIdCard【唯一】，取消交易人cancelMan(buyer/seller)，取消交易时间date
+--------------------------------------------------------------------------------
+说明:
+1、手机号+身份证进入小程序【手机号实现购买后交换物品的联系，身份证进行实名认证确认身份】
+2、发布人身份证publishIdCard+发布时间pDate确定收藏/点赞/留言的是哪一个商品
+3、查看我发布的：publishIdCard
+4、查看我卖出的：publishIdCard+status（yes）
+5、查看我买到的：buyerIdCard+status（yes）
+6、举报商品：举报人reportIdCard+发布人身份证  publishIdCard+发布时间pDate
+7、查看我的举报：reportIdCard
+8、查看我的收藏：idCard+date（排序）
+9、查看我的关注：idCard+date（排序）
+10、查看我的点赞：idCard+date（排序）
+11、查看我的粉丝：publishIdCard+date（排序）
+12、查看发布商品：status（no）
+13、卖出状态status（no）与buyerIdCard（空）相对应
+14、支付：线下交易
+15、取消交易：publishIdCard+pDate+buyerIdCard +cancelMan！=null    ==>update:publishGoods中status(no)+buyerIdCard(null)
+---------------------------------------------------------------
+功能：
+1、实名认证+手机号认证进入小程序【这里使用阿里云接口】==
+2、发布闲置 ==
+3、闲置分类展示 【book书籍/cosmetics化妆品/clothing衣物/sporting运动/planting园艺/games游戏/instrument乐器/ticket卡券（电影票或其他）/household家具百货/digital数码产品/others其他】==缓存
+4、对闲置商品点赞  ==
+5、查看我的点赞 ==
+6、关注别人  ==
+7、查看我的粉丝 ==
+8、举报别人发布商品
+9、查看我举报的商品
+10、查看我的发布商品 ==
+11、查看我已卖出的商品 ==
+12、查看我买的商品  ==
+13、收藏别人商品
+14、查看我的收藏
+15、对商品留言
+16、填写对小程序的反馈意见，对小程序的评价 ==
+17、购买商品 ==
+18、查看我的关注 ==
+19、取消交易 ==
+20、查看交易失败的订单  （买方idCard/卖方publishIdCard） ==
+21、【注册、登录、修改个人信息】 ==
+22、取消点赞==
+23、查看我所点的赞 == 
+24、查看我的商品所获得的赞 ==
+25、查看我获得的所有赞 ==
+26、取消关注、移除粉丝==
+27、删除已发布商品 ==
+28、关于数量的：关注数、点赞数、发布数、收藏数、etc->暂不做
+29、根据我的关注人页面上   获取被关注人信息 ==
+--------------------
+进行缓存：<暂时还只做了闲置发布的>
+1、发布即插入缓存==
+2、按分类获取闲置==
+3、获取所有的闲置【如果缓存是清空状态，那清空后的第一次查询将会耗费一段时间】==
+4、删除发布 == 
+5、交易状态更新后 缓存中的数据也要更新【交易、取消交易-》即时在数据库中操作    但缓存定时更新-》假设为5h审核】【则缓存会定时5h清空】 ==
+-----------------------
+互不影响的查询变成异步：
+1、获取分类闲置   【因为事先已缓存】
+2、获取所有闲置
+3、其他补充
+------------
+加密解密AES：
+暂时不使用此功能【等前端接口测试完了再进行加密解密】
+------------------
+关键字搜索
+热门搜索 hotsearch(name, cnt)
+修改头像
+语音识别
+针对评论与回复（及与我相关）
